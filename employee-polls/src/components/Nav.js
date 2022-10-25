@@ -1,12 +1,22 @@
 import { connect } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
-const Nav = ({ currentUser }) => {
+const Nav = ({ users }) => {
+  const { authed, authedUser, logout } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const currentUser = users[authedUser];
 
   const homeSelected = location.pathname === "/";
   const leaderboardSelected = location.pathname === "/leaderboard";
   const newSelected = location.pathname === "/add";
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <nav className="nav">
@@ -35,16 +45,14 @@ const Nav = ({ currentUser }) => {
           </li>
         )}
         {currentUser && <li></li>}
-        <li>
-          <Link to="/login">Logout</Link>
-        </li>
+        {authed && <button onClick={handleLogout}>Logout</button>}
       </ul>
     </nav>
   );
 };
 
-const mapStateToProps = ({ users, authedUser }) => ({
-  currentUser: users[authedUser],
+const mapStateToProps = ({ users }) => ({
+  users,
 });
 
 export default connect(mapStateToProps)(Nav);

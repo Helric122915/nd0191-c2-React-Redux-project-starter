@@ -2,9 +2,11 @@ import { useState } from "react";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { handleAddQuestion } from "../actions/questions";
+import useAuth from "../hooks/useAuth";
 
 const PollCreate = (props) => {
   const navigate = useNavigate();
+  const { authedUser } = useAuth();
   const [firstOptionText, setFirstOptionText] = useState("");
   const [secondOptionText, setSecondOptionText] = useState("");
 
@@ -23,7 +25,9 @@ const PollCreate = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    props.dispatch(handleAddQuestion(firstOptionText, secondOptionText));
+    props.dispatch(
+      handleAddQuestion(authedUser, firstOptionText, secondOptionText)
+    );
 
     navigate("/");
   };

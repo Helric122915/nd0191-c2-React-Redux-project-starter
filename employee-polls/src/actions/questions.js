@@ -12,10 +12,8 @@ function addQuestion(question) {
   };
 }
 
-export function handleAddQuestion(optionOneText, optionTwoText) {
-  return (dispatch, getState) => {
-    const { authedUser } = getState();
-
+export function handleAddQuestion(authedUser, optionOneText, optionTwoText) {
+  return (dispatch) => {
     dispatch(showLoading());
 
     return _saveQuestion({ optionOneText, optionTwoText, author: authedUser })
@@ -40,10 +38,8 @@ function answerQuestion({ authedUser, qid, answer }) {
   };
 }
 
-export function handleAnswerQuestion(qid, answer) {
-  return (dispatch, getState) => {
-    const { authedUser } = getState();
-
+export function handleAnswerQuestion(authedUser, qid, answer) {
+  return (dispatch) => {
     return _saveQuestionAnswer({ authedUser, qid, answer }).then(() =>
       dispatch(answerQuestion({ authedUser, qid, answer }))
     );

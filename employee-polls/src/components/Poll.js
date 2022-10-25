@@ -1,6 +1,7 @@
 import { connect } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { handleAnswerQuestion } from "../actions/questions";
+import useAuth from "../hooks/useAuth";
 
 const withRouter = (Component) => {
   const ComponentWithRouterProp = (props) => {
@@ -14,7 +15,8 @@ const withRouter = (Component) => {
 };
 
 const Poll = (props) => {
-  const { authedUser, authorUser, question, dispatch } = props;
+  const { authedUser } = useAuth();
+  const { authorUser, question, dispatch } = props;
 
   if (!question) {
     return (
@@ -30,11 +32,11 @@ const Poll = (props) => {
   const unansweredPoll = !answeredOptionOne && !answeredOptionTwo;
 
   const selectOptionOne = () => {
-    dispatch(handleAnswerQuestion(question.id, "optionOne"));
+    dispatch(handleAnswerQuestion(authedUser, question.id, "optionOne"));
   };
 
   const selectOptionTwo = () => {
-    dispatch(handleAnswerQuestion(question.id, "optionTwo"));
+    dispatch(handleAnswerQuestion(authedUser, question.id, "optionTwo"));
   };
 
   const optionOneVotes = question.optionOne.votes.length;
@@ -114,12 +116,11 @@ const Poll = (props) => {
   );
 };
 
-const mapStateToProps = ({ authedUser, questions, users }, props) => {
+const mapStateToProps = ({ questions, users }, props) => {
   const { id } = props.router.params;
   const question = questions[id];
 
   return {
-    authedUser,
     question,
     authorUser: !question ? null : users[question.author],
   };

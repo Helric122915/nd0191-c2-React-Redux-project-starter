@@ -7,14 +7,17 @@ import { Provider } from "react-redux";
 import reducer from "./reducers";
 import middleware from "./middleware";
 import { BrowserRouter } from "react-router-dom";
+import { AuthProvider } from "./hooks/useAuth";
 
 const store = createStore(reducer, middleware);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </AuthProvider>
   </Provider>
 );

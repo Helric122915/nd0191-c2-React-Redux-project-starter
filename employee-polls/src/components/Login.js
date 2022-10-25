@@ -1,17 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { connect } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { setAuthedUser } from "../actions/authedUser";
+import { useLocation, useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 const Login = (props) => {
   const navigate = useNavigate();
+  const { login } = useAuth();
+  const { state } = useLocation();
   const [userText, setUserText] = useState("");
   const [passwordText, setPasswordText] = useState("");
   const [invalidLogin, setInvalidLogin] = useState(false);
-
-  useEffect(() => {
-    props.dispatch(setAuthedUser(null));
-  }, []);
 
   const handleUserTextChange = (e) => {
     setInvalidLogin(false);
@@ -35,9 +33,9 @@ const Login = (props) => {
     const selectedUser = props.users[userText];
 
     if (selectedUser && selectedUser.password === passwordText) {
-      props.dispatch(setAuthedUser(selectedUser.id));
-
-      navigate("/");
+      login(selectedUser.id).then(() => {
+        navigate(state?.path || "/dashboard");
+      });
     } else {
       setInvalidLogin(true);
     }
@@ -75,9 +73,8 @@ const Login = (props) => {
   );
 };
 
-const mapStateToProps = ({ users, authedUser }) => ({
+const mapStateToProps = ({ users }) => ({
   users,
-  authedUser,
 });
 
 export default connect(mapStateToProps)(Login);
