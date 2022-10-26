@@ -34,7 +34,7 @@ const Login = (props) => {
 
     if (selectedUser && selectedUser.password === passwordText) {
       login(selectedUser.id).then(() => {
-        navigate(state?.path || "/dashboard");
+        navigate(state?.path || "/");
       });
     } else {
       setInvalidLogin(true);

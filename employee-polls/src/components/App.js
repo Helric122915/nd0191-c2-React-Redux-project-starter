@@ -3,7 +3,7 @@ import { handleInitialData } from "../actions/shared";
 import { Fragment, useEffect } from "react";
 import { connect } from "react-redux";
 import LoadingBar from "react-redux-loading-bar";
-import { Route, useLocation, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Login from "./Login";
 import Nav from "./Nav";
 import Poll from "./Poll";
@@ -14,10 +14,6 @@ import NotFoundResult from "./NotFoundResult";
 import RequireAuth from "./RequireAuth";
 
 function App(props) {
-  const location = useLocation();
-
-  const onLoginPage = location.pathname.includes("login");
-
   useEffect(() => {
     props.dispatch(handleInitialData());
   }, []);
@@ -26,7 +22,7 @@ function App(props) {
     <Fragment>
       <LoadingBar />
       <div className="App">
-        {!onLoginPage && <Nav />}
+        <Nav />
         {props.loading ? null : (
           <Routes>
             <Route
@@ -48,7 +44,7 @@ function App(props) {
             />
             <Route path="/login" element={<Login />} />
             <Route
-              path="/question/:id"
+              path="/questions/:id"
               element={
                 <RequireAuth>
                   <Poll />

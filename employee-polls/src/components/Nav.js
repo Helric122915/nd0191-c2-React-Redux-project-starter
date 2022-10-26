@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
 const Nav = ({ users }) => {
@@ -45,7 +45,7 @@ const Nav = ({ users }) => {
           </li>
         )}
         {currentUser && <li></li>}
-        {authed && <button onClick={handleLogout}>Logout</button>}
+        {authed && <NavLink onClick={handleLogout}>Logout</NavLink>}
       </ul>
     </nav>
   );
