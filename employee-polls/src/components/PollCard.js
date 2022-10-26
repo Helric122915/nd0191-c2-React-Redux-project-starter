@@ -5,7 +5,7 @@ const PollCard = ({ question }) => {
   const navigate = useNavigate();
 
   const showPoll = () => {
-    navigate(`/question/${question.id}`);
+    navigate(`/questions/${question.id}`);
   };
 
   return (
